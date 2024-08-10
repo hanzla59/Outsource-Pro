@@ -1,7 +1,10 @@
 const Token = require('../Models/token');
 const JWT = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
-const Token_Secret_Key = "902e979394929598dd3155c635862173f5666f5e2811e05d3616905552a7e91a";
+dotenv.config();
+
+const Token_Secret_Key = process.env.Token_Secret_Key;
 
 class JWTService {
     static signToken(payload, expiryTime) {

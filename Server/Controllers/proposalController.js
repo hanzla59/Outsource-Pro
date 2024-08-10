@@ -60,6 +60,12 @@ const proposalController = {
                 };
                 return next(error);
             }
+            if(checkjob.status !== "open"){
+                return next({
+                    status:401,
+                    message:"Job is not Open" 
+                })
+            }
 
             const checkproposal = await Proposal.findOne({freelancer:decodeToken._id, job:id})
             if(checkproposal){
@@ -172,7 +178,7 @@ const proposalController = {
             if(decodeToken._id.toString() !== checkjob.client.toString()){
                 const error = {
                     status:401,
-                    message:"you don't have access to accept this"
+                    message:"you don't have access to accept this proposal"
                 }
                 return next(error);
             }
@@ -268,10 +274,6 @@ const proposalController = {
 
     //get all proposal send to the all job which is posted by single user
     async getbyuser(req,res,next){
-        //first check user authentication by token and he is only client
-        //check all jobs which is posted by that user
-        //check all propsal which is send to all that jobs
-
         const {token} = req.cookies;
         if(!token){
             const error = {
